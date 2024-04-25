@@ -1,0 +1,14 @@
+#:kivy 1.0.9
+
+<Medz>:
+    GridLayout:
+        id: blayout
+        padding: 10
+        width: app.width
+        height: app.height
+        spacing: 10
+        orientation: 'lr-tb'
+        Button:
+            text: 'Add Schedule'
+            on_press:
+                root.addButton()
