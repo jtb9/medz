@@ -54,6 +54,7 @@ interface userStateActions {
   addToErrorMulti: (newErrorSet: any[]) => void,
   patchViewAttributeState: (slug: string, newValues: any, id: string) => void,
   patchDataAttributeState: (slug: string, newValues: any, id: string) => void,
+  // deleteContentByKey: (slug: string, id: string) => void
   // addContentState: (newKey: string, extras: any) => void
 }
 
@@ -66,6 +67,10 @@ export const useUserStore = create<userState & userStateActions>()(
 
       // addContentState: (newKey: string, extras: any) => {
       //   con
+      // },
+
+      // deleteContentByKey: (slug: string, id: string) => {
+
       // },
 
       patchDataAttributeState: (slug: string, newValues: any, id: string) => {
@@ -108,28 +113,38 @@ function attributePatch(set: any, parentAttribute: string | undefined, attribute
     }
 
     try {
-      if (parentAttribute === undefined) {
-        let subBuffer = {
-          ...newState[attribute][id],
-          ...value
+      if (value === undefined) {
+        // delete request
+        if (parentAttribute === undefined) {
+          delete newState[attribute][id];
         }
-
-        newState[attribute][id] = subBuffer;
+        else {
+          delete newState[parentAttribute][attribute][id];
+        }
       }
       else {
-        let subBuffer = {
-          ...newState[parentAttribute][attribute][id],
-          ...value
+        if (parentAttribute === undefined) {
+          let subBuffer = {
+            ...newState[attribute][id],
+            ...value
+          }
+
+          newState[attribute][id] = subBuffer;
         }
+        else {
+          let subBuffer = {
+            ...newState[parentAttribute][attribute][id],
+            ...value
+          }
 
-        newState[parentAttribute][attribute][id] = subBuffer;
+          newState[parentAttribute][attribute][id] = subBuffer;
+        }
       }
-
 
     }
     catch (e) {
       logError({
-        message: "error in attributeSingleSet",
+        message: "error in attributePatch",
         exception: e,
         parentAttribute,
         attribute,

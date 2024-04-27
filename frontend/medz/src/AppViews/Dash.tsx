@@ -3,6 +3,7 @@ import ActionBar from 'Components/ActionBar';
 import ContentMenu from 'Components/ContentMenu';
 import ContentWindows from 'Components/ContentWindows';
 import { useUserStore } from 'State/user_state';
+import StateMonitor from 'StateMonitor';
 // import ComponentTest from 'Components/ComponentTest';
 
 function Dash(props: any) {
@@ -10,6 +11,7 @@ function Dash(props: any) {
   
   const renderDashView = () => {
     return <div>
+      <StateMonitor />
       <Background type={state.view.background} />
       <ActionBar />
       <ContentMenu />

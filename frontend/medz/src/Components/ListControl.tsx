@@ -1,51 +1,89 @@
-import Button from "BaseComponents/Button";
-import Column from "BaseComponents/Column";
-import Row from "BaseComponents/Row";
-import TextInput from "BaseComponents/TextInput";
-import Typography from "BaseComponents/Typography";
-import { useState } from "react";
-import toast from "react-hot-toast";
+import { useComponentSize } from "react-use-size";
+import { useRef, useState } from "react";
+import { useUserStore } from "State/user_state";
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { modifyIntOfPxString } from "Utilities/modifier";
 
 function ListControl(props: any) {
+    const state = useUserStore(state => state);
     const [adding, setAdding] = useState(false);
     const [nextInput, setNextInput] = useState("");
+    const [tab, setTab] = useState(0);
+    const theme = state.view.theme;
+    let sunSizeControlRef = useRef(null);
+    const windowHeight = props.windowHeight;
+    const contentKey = props.contentKey;
 
-    const renderAddingRegion = () => {
-        if (adding) {
-            return <Row>
-                <TextInput value={nextInput} onChange={(v: string) => {
-                    setNextInput(v);
-                }} />
-                <Button width={15} height={15} label="Save" onClick={() => {
-                    setAdding(false);
-                    props.onAdd(nextInput);
-                }} />
-            </Row>
+    //@ts-ignore
+    const contentState = state.data.content[contentKey];
+
+    const getContent = () => {
+        try {
+            return contentState.items[tab];
         }
-        else {
-            return <Button width={15} height={15} img="add.svg" onClick={() => {
-                setAdding(true);
-                setNextInput("");
-            }} />
+        catch (e) {
+            return ""
         }
     }
 
-    const renderItemsRegion = () => {
-        let items = [];
+    const setContent = (newValue: any) => {
+        try {
+            let allItemsBuffer = contentState.items;
 
-        for (let i = 0; i < props.items.length; i++) {
-            items.push(<Typography white={true} skey={i}>{props.items[i]}</Typography>)
+            allItemsBuffer[tab] = newValue;
+
+            state.patchDataAttributeState("content", {
+                items: allItemsBuffer
+            }, contentKey)
+        }
+        catch (e) {
+
+        }
+    }
+
+    const renderThemeBasedWrapper = (children: any) => {
+        if (theme === 'default') {
+            const themeWindowSizeChange = -60;
+            const heightForThisTheme = modifyIntOfPxString(windowHeight, themeWindowSizeChange);
+
+            return <div style={{
+                cursor: 'text',
+                width: '100%',
+                height: `${heightForThisTheme}`
+            }} ref={sunSizeControlRef} className="t-default-sun-list-wrapper">
+                {children}
+            </div>
         }
 
-        return items;
+        return <div>
+            {children}
+        </div>
     }
-    
-    return <Row>
-        <Column>
-            {renderItemsRegion()}
-            {renderAddingRegion()}
-        </Column>
-    </Row>
+
+    const sunBasedEditor = () => {
+        return renderThemeBasedWrapper(
+            <CKEditor
+                editor={ClassicEditor}
+                data={getContent()}
+                onReady={editor => {
+
+                }}
+                onChange={(event, editor) => {
+                    setContent(editor.data.get());
+                }}
+                onBlur={(event, editor) => {
+
+                }}
+                onFocus={(event, editor) => {
+
+                }}
+            />
+        )
+    }
+
+    //@ts-ignore
+    return sunBasedEditor();
 }
 
 export default ListControl;

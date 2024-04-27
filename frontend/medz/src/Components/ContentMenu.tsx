@@ -37,11 +37,14 @@ function ContentMenu(props: any) {
         } = content;
 
         if (type === "list") {
-            return <Button label={name} onClick={() => {
-                state.patchDataAttributeState("content", {
-                    open: true
-                }, id)
-            }} />
+            return <Button 
+                label={name}
+                onClick={() => {
+                    state.patchDataAttributeState("content", {
+                        open: true
+                    }, id)
+                }} 
+            />
         }
 
         return <span />

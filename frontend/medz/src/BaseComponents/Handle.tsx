@@ -2,7 +2,7 @@ import { useUserStore } from "State/user_state";
 import Typography from "./Typography";
 import { useState } from "react";
 
-function Button(props: any) {
+function Handle(props: any) {
   // const { ref, height, width } = useComponentSize();
   const state = useUserStore(state => state);
   const theme = state.view.theme;
@@ -17,7 +17,8 @@ function Button(props: any) {
     id,
     white,
     marginTop,
-    hoverContent
+    hoverContent,
+    className
   } = props;
 
   const widthPx = `${width}px`;
@@ -71,18 +72,7 @@ function Button(props: any) {
           marginTop: marginTop ? `${marginTop}px` : undefined,
           position: 'relative'
         }} 
-        className="button-t-default" 
-        onMouseEnter={() => {
-          setInHover(true);
-        }}
-        onMouseLeave={() => {
-          setInHover(false);
-        }}
-        onClick={() => {
-          if (props.onClick) {
-            props.onClick();
-          }
-        }}
+        className={`handle-t-default ${className}`} 
       >
         {renderChildren()}
         {renderHover()}
@@ -95,4 +85,4 @@ function Button(props: any) {
   return renderWrapper();
 }
 
-export default Button;
+export default Handle;

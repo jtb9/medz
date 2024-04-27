@@ -1,6 +1,7 @@
 import 'CSS/App.css';
 import Dash from 'AppViews/Dash';
 import { useUserStore } from 'State/user_state';
+import StateMonitor from 'StateMonitor';
 
 function App() {
   const state = useUserStore.getState();
@@ -14,7 +15,9 @@ function App() {
     return <span />
   }
   
-  return renderCurrentFeature();
+  return <>
+    {renderCurrentFeature()}
+  </>
 }
 
 export default App;
