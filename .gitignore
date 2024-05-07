@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+# nextjs
+.next
+frontend\medz\.next
+
 # Distribution / packaging
 .Python
 build/

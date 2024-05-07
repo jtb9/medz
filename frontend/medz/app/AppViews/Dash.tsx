@@ -1,3 +1,4 @@
+'use client';
 import Background from 'BaseComponents/Background';
 import ActionBar from 'Components/ActionBar';
 import ContentMenu from 'Components/ContentMenu';
