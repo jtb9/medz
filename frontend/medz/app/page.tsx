@@ -1,4 +1,5 @@
 import 'CSS/App.css';
+import 'CSS/Components.css';
 import Dash from 'AppViews/Dash';
 import { useUserStore } from 'State/user_state';
 
