@@ -140,8 +140,8 @@ function Window(props: any) {
             y: minTopCalc()
         }}
     >{
-            renderWithTheme()
-        }</Rnd>
+        renderWithTheme()
+    }</Rnd>
 }
 
 export default Window;
